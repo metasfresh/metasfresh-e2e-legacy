@@ -111,7 +111,7 @@ function applyDataEntryField(dataEntryField) {
     if (dataEntryField.seqNo) {
       cy.getFieldValue('SeqNo').then(currentValue => {
         if (currentValue !== dataEntryField.seqNo) {
-          cy.log(`applyDataEntryField - dataEntryGroup.seqNo=${dataEntryField.seqNo}; currentValue=${currentValue}`);
+          cy.log(`applyDataEntryField - dataEntryField.seqNo=${dataEntryField.seqNo}; currentValue=${currentValue}`);
           cy.clearField('SeqNo');
           cy.writeIntoStringField('SeqNo', `${dataEntryField.seqNo}`);
         }

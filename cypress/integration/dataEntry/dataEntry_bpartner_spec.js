@@ -1,5 +1,5 @@
 import { DataEntrySubTab } from '../../support/utils/dataEntryTab';
-import { dataEntryTab } from '../../support/utils/dataEntryTab.1';
+import { DataEntryTab } from '../../support/utils/dataEntryTab';
 import { DataEntrySection, DataEntryLine } from '../../support/utils/dataEntrySection';
 import { DataEntryField, DataEntryListValue } from '../../support/utils/dataEntryField';
 
@@ -12,7 +12,7 @@ describe('Create bpartner with custom dataentry based tabs', function() {
     const dataEntrySection1Name = `Section1-1 ${timestamp}`;
     const dataEntrySection2Name = `Section1-2 ${timestamp}`;
 
-    new dataEntryTab(dataEntryTabName, 'Business Partner')
+    new DataEntryTab(dataEntryTabName, 'Business Partner')
       .setTabName('Tab1-Tab1')
       .setSeqNo('21')
       .setDescription(`Description of ${dataEntryTabName}`)

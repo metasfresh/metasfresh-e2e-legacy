@@ -114,8 +114,10 @@ declare namespace Cypress {
     visitWindow(windowId: BigInteger, recordId: string, documentIdAliasName: string): Chainable<any>
 
     /**
-     * Wait for the response to a particular patch where a particular field value was set
-     * thx to https://github.com/cypress-io/cypress/issues/387#issuecomment-458944112
+     * Wait for the completion of a particular patch where a particular field was set to a particular value.
+     * Useful to make sure that cypress waits for the UI to react to each particular input before proceeding to the next one.
+     * 
+     * Thx to https://github.com/cypress-io/cypress/issues/387#issuecomment-458944112
      * 
      * @param alias name of the alias to wait for; needs to begin with '@'
      */

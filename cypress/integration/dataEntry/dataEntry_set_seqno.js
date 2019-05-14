@@ -1,4 +1,4 @@
-import { DataEntryTab } from '../../support/utils/DataEntryTab';
+import { DataEntryTab } from '../../support/utils/dataEntryTab';
 
 describe('Reproduce issue https://github.com/metasfresh/metasfresh-webui-frontend/issues/2214', function() {
   it('Create dataEntry tab with SeqNo 21', function() {

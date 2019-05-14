@@ -4,14 +4,18 @@ import { DataEntrySection, DataEntryLine } from '../../support/utils/dataEntrySe
 import { DataEntryField, DataEntryListValue } from '../../support/utils/dataEntryField';
 
 describe('Create bpartner with custom dataentry based tabs', function() {
-  it('Create bpartner with custom dataentry based tabs', function() {
-    const timestamp = new Date().getTime(); // used in the document names, for ordering
-    const dataEntryTabName = `Tab1 ${timestamp}`;
+  // these 2 ware set during the first test; we need to split this into multiple tests to clear routes and avoid the wrong routes beeing matched
+  let dataEntryTabId;
+  let dataEntrySubTabId;
 
-    const dataEntrySubTab1Name = `SubTab1-1 ${timestamp}`;
-    const dataEntrySection1Name = `Section1-1 ${timestamp}`;
-    const dataEntrySection2Name = `Section1-2 ${timestamp}`;
+  const timestamp = new Date().getTime(); // used in the document names, for ordering
+  const dataEntryTabName = `Tab1 ${timestamp}`;
 
+  const dataEntrySubTab1Name = `SubTab1-1 ${timestamp}`;
+  const dataEntrySection1Name = `Section1-1 ${timestamp}`;
+  const dataEntrySection2Name = `Section1-2 ${timestamp}`;
+
+  it('Create custom dataentry tab and subtab', function() {
     new DataEntryTab(dataEntryTabName, 'Business Partner')
       .setTabName('Tab1-Tab1')
       .setSeqNo('21')
@@ -25,6 +29,15 @@ describe('Create bpartner with custom dataentry based tabs', function() {
       )
       .apply();
 
+    cy.get(`@${dataEntryTabName}`).then(dataEntryTab => {
+      dataEntryTabId = dataEntryTab.documentId;
+    });
+    cy.get(`@${dataEntrySubTab1Name}`).then(dataEntrySubTab => {
+      dataEntrySubTabId = dataEntrySubTab.documentId;
+    });
+  });
+
+  it('Create custom dataentry section and lines', function() {
     new DataEntrySection(dataEntrySection1Name, dataEntrySubTab1Name)
       .setDescription(
         'Section with 3 lines; in the 1st, just one col is used; in the 2nd, one field is long-text, yet the two fields of the 3rd line shall still be alligned!'
@@ -34,7 +47,9 @@ describe('Create bpartner with custom dataentry based tabs', function() {
       .addDataEntryLine(new DataEntryLine().setSeqNo(22))
       .addDataEntryLine(new DataEntryLine().setSeqNo(33))
       .apply();
+  });
 
+  it('Create custom dataentry fields', function() {
     const section1FieldBuilder = new DataEntryField(
       'Tab1-Section1-Line1-Field1',
       `${dataEntrySection1Name}_${dataEntryTabName}_${dataEntrySubTab1Name}_11`
@@ -98,30 +113,28 @@ describe('Create bpartner with custom dataentry based tabs', function() {
       .setDataEntryRecordType('List')
       .setSeqNo('22')
       .addDataEntryListValue(
-        new DataEntryListValue('ListItem 2').setDescription('ListItem 2 with SeqNo10').setSeqNo('21')
+        new DataEntryListValue('ListItem 2').setDescription('ListItem 2 with SeqNo21').setSeqNo('21')
       )
       .addDataEntryListValue(
-        new DataEntryListValue('ListItem 1').setDescription('ListItem 1 with SeqNo20').setSeqNo('11')
+        new DataEntryListValue('ListItem 1').setDescription('ListItem 1 with SeqNo11').setSeqNo('11')
       )
       .apply();
+  });
 
+  it('Create a businesspartner with the new custom tab', function() {
     cy.visitWindow('123', 'NEW');
     cy.writeIntoStringField('CompanyName', `DataEntryBPartnerTestName ${timestamp}`);
 
-    cy.get(`@${dataEntryTabName}`).then(dataEntryTab => {
-      cy.log(`going to open the tab for dataEntryTab=${JSON.stringify(dataEntryTab)}`);
-      cy.selectTab(`DataEntry_Tab_ID-${dataEntryTab.documentId}`);
-    });
+    cy.log(`going to open the tab for dataEntryTabId=${dataEntryTabId}`);
+    cy.selectTab(`DataEntry_Tab_ID-${dataEntryTabId}`);
 
-    cy.get(`@${dataEntrySubTab1Name}`).then(dataEntrySubTab => {
-      cy.log(`going to open the tab for dataEntrySubTab=${JSON.stringify(dataEntrySubTab)}`);
-      cy.selectTab(`DataEntry_SubTab_ID-${dataEntrySubTab.documentId}`);
-    });
+    cy.log(`going to open the tab for dataEntrySubTab=${dataEntrySubTabId}`);
+    cy.selectTab(`DataEntry_SubTab_ID-${dataEntrySubTabId}`);
+  });
 
+  it('Cleanup', function() {
     // deactivate the custom tab, because we don't want other tests to unexpectedly have it among their respective bpartner-tabs
-    cy.get(`@${dataEntryTabName}`).then(dataEntryTab => {
-      cy.visitWindow('540571', dataEntryTab.documentId);
-      cy.clickOnIsActive();
-    });
+    cy.visitWindow('540571', dataEntryTabId);
+    cy.clickOnIsActive();
   });
 });

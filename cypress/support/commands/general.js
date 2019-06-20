@@ -207,6 +207,20 @@ Cypress.Commands.add('waitForHeader', (pageName, breadcrumbNr) => {
   });
 });
 
+Cypress.Commands.add('clickOnBreadcrumb', (location, area) => {
+  describe('Choose which one from breadcrumb to be pressed', function() {
+    cy.get('.header-item-container > .header-item')
+      .contains(location)
+      .click();
+    //if the title you've pressed contains a menu add a second argument with title of what you want to press on that list
+    if (area) {
+      cy.get('.menu-overlay-link')
+        .contains(area)
+        .click();
+    }
+  });
+});
+
 function visitTableWindow(windowId) {
   cy.visit(`/window/${windowId}`);
 }

@@ -1,0 +1,5 @@
+{
+    "isCustomer": true,
+    "customerPricingSystem": "Testpreisliste Kunden",
+    "customerDiscountSchema": "DiscountSchemaTest"
+}

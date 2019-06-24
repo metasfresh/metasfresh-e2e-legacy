@@ -32,15 +32,18 @@ export class SalesOrder {
 function applySalesOrder(salesOrder) {
   describe(`Create new salesOrder`, function() {
     cy.visit('/window/143/NEW');
+    cy.waitForHeader('Sales', 'SalesOrder');
     cy.get('.header-breadcrumb-sitename').should('contain', '<');
 
     cy.writeIntoLookupListField('C_BPartner_ID', salesOrder.bPartner, salesOrder.bPartner);
-    cy.writeIntoLookupListField(
-      'C_BPartner_Location_ID',
-      salesOrder.bPartnerLocation,
-      salesOrder.bPartnerLocation,
-      true /*typeList*/
-    );
+
+    if (salesOrder.bPartnerLocation)
+      cy.writeIntoLookupListField(
+        'C_BPartner_Location_ID',
+        salesOrder.bPartnerLocation,
+        salesOrder.bPartnerLocation,
+        true /*typeList*/
+      );
 
     cy.get('.header-breadcrumb-sitename').should('not.contain', '<');
 

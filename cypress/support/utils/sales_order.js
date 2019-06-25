@@ -21,6 +21,18 @@ export class SalesOrder {
     return this;
   }
 
+  setPricingSystem(pricingSystem) {
+    cy.log(`SalesOrder - pricingSystem = ${pricingSystem}`);
+    this.pricingSystem = pricingSystem;
+    return this;
+  }
+
+  setPaymentTerm(paymentTerm) {
+    cy.log(`SalesOrder - paymentTerm = ${paymentTerm}`);
+    this.paymentTerm = paymentTerm;
+    return this;
+  }
+
   apply() {
     cy.log(`SalesOrder - apply - START (${this.reference})`);
     applySalesOrder(this);
@@ -32,15 +44,27 @@ export class SalesOrder {
 function applySalesOrder(salesOrder) {
   describe(`Create new salesOrder`, function() {
     cy.visit('/window/143/NEW');
+    cy.waitForHeader('Sales', 'Sales Order');
     cy.get('.header-breadcrumb-sitename').should('contain', '<');
 
     cy.writeIntoLookupListField('C_BPartner_ID', salesOrder.bPartner, salesOrder.bPartner);
-    cy.writeIntoLookupListField(
-      'C_BPartner_Location_ID',
-      salesOrder.bPartnerLocation,
-      salesOrder.bPartnerLocation,
-      true /*typeList*/
-    );
+
+    if (salesOrder.bPartnerLocation) {
+      cy.writeIntoLookupListField(
+        'C_BPartner_Location_ID',
+        salesOrder.bPartnerLocation,
+        salesOrder.bPartnerLocation,
+        true /*typeList*/
+      );
+    }
+
+    if (salesOrder.pricingSystem) {
+      cy.selectInListField('M_PricingSystem_ID', salesOrder.pricingSystem);
+    }
+
+    if (salesOrder.paymentTerm) {
+      cy.selectInListField('C_PaymentTerm_ID', salesOrder.paymentTerm);
+    }
 
     cy.get('.header-breadcrumb-sitename').should('not.contain', '<');
 

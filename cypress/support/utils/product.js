@@ -131,6 +131,13 @@ function applyProduct(product) {
       });
       cy.get('table tbody tr').should('have.length', product.prices.length);
     }
+
+    if (product.CU_TU_Allocation.length > 0) {
+      product.CU_TU_Allocation.forEach(function(allocation) {
+        applyCUTUAllocation(allocation);
+      });
+      cy.get('table tbody tr').should('have.length', product.prices.length);
+    }
   });
 }
 
@@ -189,4 +196,14 @@ function applyProductPrice(price) {
     cy.selectInListField('C_TaxCategory_ID', getLanguageSpecific(price, 'c_taxcategory'));
     cy.pressDoneButton();
   });
+}
+
+function applyCUTUAllocation(CUTUAllocation) {
+  cy.selectTab('M_HU_PI_Item_Product')
+    .pressAddNewButton()
+    .selectInListField('M_HU_PI_Item_ID', CUTUAllocation.packing, true /*modal*/)
+    .clearField('Qty')
+    .writeIntoStringField('Qty', CUTUAllocation.quantity, true /*modal*/)
+    .selectDateViaPicker('ValidFrom', 'today', true /*modal*/)
+    .pressDoneButton();
 }

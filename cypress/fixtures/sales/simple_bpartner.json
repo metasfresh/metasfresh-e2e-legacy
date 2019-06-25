@@ -1,0 +1,11 @@
+{
+  "name": "Simple Customer",
+  "isCustomer": true,
+  "customerPricingSystem": "Testpreisliste Kunden",
+  "customerDiscountSchema": "DiscountSchemaTest",
+  "bPartnerLocations": [{
+    "name": "Address1",
+    "city": "Cologne",
+    "country": "Deutschland"
+  }]
+}

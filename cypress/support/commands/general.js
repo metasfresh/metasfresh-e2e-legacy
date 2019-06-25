@@ -207,6 +207,17 @@ Cypress.Commands.add('waitForHeader', (pageName, breadcrumbNr) => {
   });
 });
 
+Cypress.Commands.add('clickOnBreadcrumb', breadcrumbNr => {
+  describe('Wait for page name visible in the header', function() {
+    cy.get('.header-breadcrumb')
+      .find('.header-btn')
+      .should('not.have.length', 1)
+      .get('.header-item-container.pointer.header-item-last-level')
+      .should('contain', breadcrumbNr)
+      .click();
+  });
+});
+
 function visitTableWindow(windowId) {
   cy.visit(`/window/${windowId}`);
 }

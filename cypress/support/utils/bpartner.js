@@ -6,6 +6,8 @@ export class BPartner {
     this.vendorPricingSystem = undefined;
     this.vendorDiscountSchema = undefined;
     this.customerDiscountSchema = undefined;
+    this.customerPaymentTerm = undefined;
+    this.customerDunning = undefined;
     this.isCustomer = false;
     this.bPartnerLocations = [];
     this.contacts = [];
@@ -51,6 +53,18 @@ export class BPartner {
   setCustomerDiscountSchema(customerDiscountSchema) {
     cy.log(`BPartner - set customerDiscountSchema = ${customerDiscountSchema}`);
     this.customerDiscountSchema = customerDiscountSchema;
+    return this;
+  }
+
+  setCustomerPaymentTerm(customerPaymentTerm) {
+    cy.log(`BPartner - set customerDiscountSchema = ${customerPaymentTerm}`);
+    this.customerPaymentTerm = customerPaymentTerm;
+    return this;
+  }
+
+  setCustomerDunning(customerDunning) {
+    cy.log(`BPartner - set customerDiscountSchema = ${customerDunning}`);
+    this.customerDunning = customerDunning;
     return this;
   }
 
@@ -175,6 +189,12 @@ function applyBPartner(bPartner) {
       }
       if (bPartner.customerPricingSystem) {
         cy.selectInListField('M_PricingSystem_ID', bPartner.customerPricingSystem, bPartner.customerPricingSystem);
+      }
+      if (bPartner.customerPaymentTerm) {
+        cy.selectInListField('C_PaymentTerm_ID', bPartner.customerPaymentTerm);
+      }
+      if (bPartner.customerDunning) {
+        cy.selectInListField('C_Dunning_ID', bPartner.customerDunning);
       }
       cy.pressDoneButton();
     }

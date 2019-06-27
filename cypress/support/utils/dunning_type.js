@@ -98,7 +98,9 @@ const applyDunningTypeEntryLine = (dunningEntry, timestamp) => {
 
   cy.writeIntoStringField('Name', dunningEntry.name + timestamp, true);
   cy.writeIntoStringField('PrintName', dunningEntry.printName + timestamp, true);
-  cy.writeIntoStringField('DaysBetweenDunning', dunningEntry.days, true);
+  if (dunningEntry.days) {
+    cy.writeIntoStringField('DaysBetweenDunning', dunningEntry.days, true);
+  }
   cy.writeIntoTextField('NoteHeader', dunningEntry.header + timestamp, true);
   cy.writeIntoTextField('Note', dunningEntry.note + timestamp, true);
 

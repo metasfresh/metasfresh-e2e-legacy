@@ -8,7 +8,7 @@ export class SalesInvoice {
   }
 
   addLine(salesInvoiceLine) {
-    console.log(`SalesInvoice - add InvoiceLine = ${JSON.stringify(salesInvoiceLine)}`);
+    cy.log(`SalesInvoice - add InvoiceLine = ${JSON.stringify(salesInvoiceLine)}`);
     this.lines.push(salesInvoiceLine);
     return this;
   }
@@ -23,14 +23,19 @@ export class SalesInvoice {
     return this;
   }
 
+  setPriceList(priceList) {
+    this.priceList = priceList;
+    return this;
+  }
+
   apply() {
     cy.log(`SalesInvoice - apply START (${this._toString})`);
-    this.applySalesInvoice(this);
+    SalesInvoice.applySalesInvoice(this);
     cy.log(`SalesInvoice - apply STOP (${this._toString})`);
     return this;
   }
 
-  applySalesInvoice(salesInvoice) {
+  static applySalesInvoice(salesInvoice) {
     describe(`Create new SalesInvoice: ${salesInvoice._toString}`, () => {
       cy.visitWindow('167', 'NEW');
       cy.get('.header-breadcrumb-sitename')
@@ -38,12 +43,14 @@ export class SalesInvoice {
         .should('contain', new Date().getFullYear());
 
       cy.writeIntoLookupListField('C_BPartner_ID', salesInvoice.businessPartner, salesInvoice.businessPartner);
-      cy.getFieldValue('M_PriceList_ID').should('not.be.empty');
-      cy.getFieldValue('C_Currency_ID').should('not.be.empty');
 
-      cy.getFieldValue('DocumentNo').should('be.empty');
+      cy.getStringFieldValue('M_PriceList_ID').should('not.be.empty');
+      cy.getStringFieldValue('C_Currency_ID').should('not.be.empty');
+      cy.selectInListField('M_PriceList_ID', salesInvoice.priceList);
+
+      cy.getStringFieldValue('DocumentNo').should('be.empty');
       cy.selectInListField('C_DocTypeTarget_ID', salesInvoice.targetDocumentType);
-      cy.getFieldValue('DocumentNo').should('not.be.empty');
+      cy.getStringFieldValue('DocumentNo').should('not.be.empty');
 
       salesInvoice.lines.forEach(line => {
         SalesInvoice.applyLine(line);
@@ -59,11 +66,23 @@ export class SalesInvoice {
     });
   }
 
+  /**
+   * Possible workaround for applyLine_buggy:
+   * It could be that setting the qty before setting the product id will fix the issue where 'done' button is pressed BEFORE
+   * the QtyEntered is saved.
+   *
+   * This is just a workaround though which isn't very cool to use.
+   */
   static applyLine(salesInvoiceLine) {
     cy.selectTab('C_InvoiceLine');
     cy.pressAddNewButton();
 
+    cy.writeIntoStringField('QtyEntered', salesInvoiceLine.quantity, true, null, true);
     cy.writeIntoLookupListField('M_Product_ID', salesInvoiceLine.product, salesInvoiceLine.product);
+
+    if (salesInvoiceLine.tuQuantity) {
+      cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
+    }
     if (salesInvoiceLine.packingItem) {
       cy.writeIntoLookupListField(
         'M_HU_PI_Item_Product_ID',
@@ -73,20 +92,34 @@ export class SalesInvoice {
         true
       );
     }
+    cy.pressDoneButton();
+  }
 
+  /*
+  static applyLine_buggy(salesInvoiceLine) {
+    cy.selectTab('C_InvoiceLine');
+    cy.pressAddNewButton();
+
+    cy.writeIntoLookupListField('M_Product_ID', salesInvoiceLine.product, salesInvoiceLine.product);
     cy.writeIntoStringField('QtyEntered', salesInvoiceLine.quantity, true, null, true);
+
+    if (salesInvoiceLine.packingItem) {
+      cy.writeIntoLookupListField('M_HU_PI_Item_Product_ID', salesInvoiceLine.packingItem, salesInvoiceLine.packingItem, true, true);
+    }
     if (salesInvoiceLine.tuQuantity) {
       cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
     }
-
+    // something's flaky around here and, it seems that i need this delay as 'QtyEntered' or 'QtyEnteredTU' is sometimes NOT updated (it remains 1).
+    // problem is it only happens sometimes :(.
+    // how to fix? i'm not sure :( (is there a function "wait_until_all_requests_are_finished_before_pressing_done" ? maybe that helps)
+    // how to quickly test? ask me and i'll help.
+    cy.wait(5000);
     cy.pressDoneButton();
   }
+   */
 }
 
 export class SalesInvoiceLine {
-  // constructor() {
-  // }
-
   setProduct(product) {
     this.product = product;
     return this;

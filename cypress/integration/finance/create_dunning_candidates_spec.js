@@ -5,10 +5,10 @@ import { DunningType, DunningTypeEntryLine } from '../../support/utils/dunning_t
 
 describe('create dunning candidates', function() {
   const timestamp = new Date().getTime();
-  const productName = `Dunning Test ${timestamp}`;
-  const customerName = `Dunning Test ${timestamp}`;
+  const productName = `ProductDunningTest ${timestamp}`;
+  const customerName = `BPartnerDunningTest ${timestamp}`;
   const salesInvoiceTargetDocumentType = 'Sales Invoice';
-  const productValue = `Dunning Test ${timestamp}`;
+  const productValue = `ProductValDunningTest ${timestamp}`;
   const productCategoryName = `ProductCategoryName ${timestamp}`;
   const productCategoryValue = `ProductNameValue ${timestamp}`;
   const dunningTypeName = `dunning test ${timestamp}`;

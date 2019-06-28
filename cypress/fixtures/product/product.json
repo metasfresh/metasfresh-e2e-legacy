@@ -11,11 +11,12 @@
   "isDiverse": false,
   "productType": "Item",
   "de_DE__productType": "Artikel",
-  "prices": [{
-    "priceStd": 2.00,
-    "m_pricelist_version": "Testpreise Kunden (Deutschland)_Germany - Deutschland_EUR_2015-01-01",
-    "de_DE__m_pricelist_version": "Testpreise Kunden (Deutschland)_Deutschland_EUR_2015-01-01",
-    "c_taxcategory": "Normaler Steuersatz 19% (Deutschland)"
+  "productPrices": [{
+    "listPriceAmount": 1.2345678,
+    "standardPriceAmount": 1.2345678,
+    "limitPriceAmount": 1.2345678,
+    "priceList": "Testpreise Kunden (Deutschland)_Germany - Deutschland_EUR_2015-01-01",
+    "taxCategory": "Normaler Steuersatz 19% (Deutschland)"
   }],
   "CU_TU_Allocation": [{
     "packing": "IFCO 6410",

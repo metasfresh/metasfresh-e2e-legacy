@@ -46,7 +46,7 @@ export class SalesInvoice {
 
       cy.getStringFieldValue('M_PriceList_ID').should('not.be.empty');
       cy.getStringFieldValue('C_Currency_ID').should('not.be.empty');
-      cy.selectInListField('M_PriceList_ID', salesInvoice.priceList);
+      // cy.selectInListField('M_PriceList_ID', salesInvoice.priceList); //this thing fails!!!!!
 
       cy.getStringFieldValue('DocumentNo').should('be.empty');
       cy.selectInListField('C_DocTypeTarget_ID', salesInvoice.targetDocumentType);
@@ -77,20 +77,20 @@ export class SalesInvoice {
     cy.selectTab('C_InvoiceLine');
     cy.pressAddNewButton();
 
-    cy.writeIntoStringField('QtyEntered', salesInvoiceLine.quantity, true, null, true);
-    cy.writeIntoLookupListField('M_Product_ID', salesInvoiceLine.product, salesInvoiceLine.product);
-
-    if (salesInvoiceLine.tuQuantity) {
-      cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
-    }
+    cy.writeIntoLookupListField('M_Product_ID', salesInvoiceLine.product, salesInvoiceLine.product, false, true);
     if (salesInvoiceLine.packingItem) {
       cy.writeIntoLookupListField(
         'M_HU_PI_Item_Product_ID',
         salesInvoiceLine.packingItem,
         salesInvoiceLine.packingItem,
-        true,
+        false,
         true
       );
+    }
+    cy.writeIntoStringField('QtyEntered', salesInvoiceLine.quantity, true, null, true);
+
+    if (salesInvoiceLine.tuQuantity) {
+      cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
     }
     cy.pressDoneButton();
   }

@@ -74,6 +74,7 @@ describe('create dunning documents', function() {
   it('create dunning candidates', function() {
     cy.visitWindow('540154');
     cy.waitForHeader('Finance', 'Dunning Candidates');
+    cy.wait(2000);
     cy.executeHeaderAction('C_Dunning_Candidate_Create');
     cy.pressStartButton(1000);
     cy.clickOnBreadcrumb('Dunning Candidates');

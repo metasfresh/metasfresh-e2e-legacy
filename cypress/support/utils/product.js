@@ -139,6 +139,13 @@ export class Product {
         });
         cy.get('table tbody tr').should('have.length', product.productPrices.length);
       }
+
+      if (product.CU_TU_Allocation.length > 0) {
+        product.CU_TU_Allocation.forEach(function(allocation) {
+          applyCUTUAllocation(allocation);
+        });
+        cy.get('table tbody tr').should('have.length', product.CU_TU_Allocation.length);
+      }
     });
   }
 

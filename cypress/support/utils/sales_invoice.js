@@ -77,12 +77,7 @@ export class SalesInvoice {
     cy.selectTab('C_InvoiceLine');
     cy.pressAddNewButton();
 
-    cy.writeIntoStringField('QtyEntered', salesInvoiceLine.quantity, true, null, true);
     cy.writeIntoLookupListField('M_Product_ID', salesInvoiceLine.product, salesInvoiceLine.product);
-
-    if (salesInvoiceLine.tuQuantity) {
-      cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
-    }
     if (salesInvoiceLine.packingItem) {
       cy.writeIntoLookupListField(
         'M_HU_PI_Item_Product_ID',
@@ -92,6 +87,10 @@ export class SalesInvoice {
         true
       );
     }
+    if (salesInvoiceLine.tuQuantity) {
+      cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
+    }
+    cy.writeIntoStringField('QtyEntered', salesInvoiceLine.quantity, true, null, true);
     cy.pressDoneButton();
   }
 

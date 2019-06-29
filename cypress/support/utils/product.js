@@ -119,7 +119,7 @@ export class Product {
       cy.getStringFieldValue('ProductType').then(productTypeValue => {
         const productType = getLanguageSpecific(product, 'productType');
 
-       if (productType != productTypeValue) {
+        if (productType != productTypeValue) {
           cy.resetListValue('ProductType');
           cy.selectInListField('ProductType', productType);
         }
@@ -244,4 +244,14 @@ export class ProductPrice {
     this.taxCategory = taxCategory;
     return this;
   }
+}
+
+function applyCUTUAllocation(CUTUAllocation) {
+  cy.selectTab('M_HU_PI_Item_Product')
+    .pressAddNewButton()
+    .selectInListField('M_HU_PI_Item_ID', CUTUAllocation.packing, true /*modal*/)
+    .clearField('Qty')
+    .writeIntoStringField('Qty', CUTUAllocation.quantity, true /*modal*/)
+    .selectDateViaPicker('ValidFrom', 'today', true /*modal*/)
+    .pressDoneButton();
 }

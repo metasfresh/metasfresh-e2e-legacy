@@ -8,7 +8,7 @@ export class SalesInvoice {
   }
 
   addLine(salesInvoiceLine) {
-    console.log(`SalesInvoice - add InvoiceLine = ${JSON.stringify(salesInvoiceLine)}`);
+    cy.log(`SalesInvoice - add InvoiceLine = ${JSON.stringify(salesInvoiceLine)}`);
     this.lines.push(salesInvoiceLine);
     return this;
   }

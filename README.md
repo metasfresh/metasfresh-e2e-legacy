@@ -2,7 +2,11 @@
 
 Right now, the actual cypress tests reside in the [metasfresh-webui-frontend](https://github.com/metasfresh/metasfresh-webui-frontend) repo. This is going to change as of issue [#7](https://github.com/metasfresh/metasfresh-e2e/issues/7) Move existing cypress tests into this repo
 
-# Build the docker image
+# Docker
+
+Note that if you just ant to run order develop cypress tests from your local machine, you probable won't need to deal with the docker-stuff at all.
+
+## Build the docker image
 
 To build the docker image locally, you can do
 
@@ -11,7 +15,7 @@ To build the docker image locally, you can do
 docker build --tag metasfresh-e2e --build-arg CACHEBUST=$(date "+%Y-%m-%d") .
 ```
 
-# Run the docker image
+## Run the docker image
 
 run the docker container, e.g. like this
 
@@ -23,13 +27,23 @@ docker run --rm\
  -e "WS_URL=https://${hostname}:443/stomp"\
  -e "USERNAME=dev"\
  -e "PASSWORD=password"\
- -e "RECORD_KEY=NOT_SET"\
- -e "BROWSER=chrome"\
+ -e "CYPRESS_SPEC=NOT_SET"\
+ -e "CYPRESS_RECORD_KEY=NOT_SET"\
+ -e "CYPRESS_BROWSER=chrome"\
  -e "DEBUG_CYPRESS_OUTPUT=n"\
  -e "DEBUG_PRINT_BASH_CMDS=n"\
  -e "DEBUG_SLEEP_AFTER_FAIL=y"\
  metasfresh-e2e
 ```
+
+### The `CYPRESS_SPEC` environment variable
+
+If `CYPRESS_SPEC` is set, then cypress is run with the `--spec` command line parameter. 
+See the documentation at https://docs.cypress.io/guides/guides/command-line.html#cypress-run-spec-lt-spec-gt 
+
+Examples:
+* `CYPRESS_SPEC=cypress/integration/currency/**` runs all specs in the `currency` folder
+* `CYPRESS_SPEC=cypress/integration/currency/currency_activate_spec.js` runs exactly the `currency_activate_spec.js` spec
 
 # Develop
 

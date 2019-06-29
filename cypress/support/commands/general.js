@@ -37,8 +37,8 @@ import notificationFixtures from '../../fixtures/misc/notifications.json';
 
 const NOTIFICATION_FIXTURE = notificationFixtures['540375'];
 
-context('Reusable "login" custom command', function() {
-  Cypress.Commands.add('loginByForm', (username, password, redirect) => {
+context('Reusable "login" custom command using API', function() {
+  Cypress.Commands.add('loginViaAPI', (username, password, redirect) => {
     let user = username;
     let pass = password;
 
@@ -48,7 +48,7 @@ context('Reusable "login" custom command', function() {
     }
 
     Cypress.log({
-      name: 'loginByForm',
+      name: 'loginViaAPI',
       message: user + ' | ' + pass,
     });
 
@@ -426,4 +426,15 @@ Cypress.Commands.add('waitForFieldValue', (alias, fieldName, expectedFieldValue,
   function isString(object) {
     return typeof object === 'string' || object instanceof String;
   }
+});
+
+
+Cypress.Commands.add('getCurrentRecordId', () => {
+  describe('Select the current record ID from the url', function () {
+    let currentRecordId = 0;
+    cy.url().then(ulrr => {
+      currentRecordId = ulrr.split('/').pop();
+    });
+    return currentRecordId;
+  });
 });

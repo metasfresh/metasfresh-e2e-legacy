@@ -46,7 +46,7 @@ export class SalesInvoice {
 
       cy.getStringFieldValue('M_PriceList_ID').should('not.be.empty');
       cy.getStringFieldValue('C_Currency_ID').should('not.be.empty');
-      cy.selectInListField('M_PriceList_ID', salesInvoice.priceList);
+      // cy.selectInListField('M_PriceList_ID', salesInvoice.priceList);
 
       cy.getStringFieldValue('DocumentNo').should('be.empty');
       cy.selectInListField('C_DocTypeTarget_ID', salesInvoice.targetDocumentType);
@@ -84,10 +84,15 @@ export class SalesInvoice {
       cy.writeIntoStringField('QtyEnteredTU', salesInvoiceLine.tuQuantity, true, null, true);
     }
     if (salesInvoiceLine.packingItem) {
-      cy.writeIntoLookupListField('M_HU_PI_Item_Product_ID', salesInvoiceLine.packingItem, salesInvoiceLine.packingItem, true, true);
+      cy.writeIntoLookupListField(
+        'M_HU_PI_Item_Product_ID',
+        salesInvoiceLine.packingItem,
+        salesInvoiceLine.packingItem,
+        true,
+        true
+      );
     }
     cy.pressDoneButton();
-
   }
 
   /*
@@ -115,7 +120,6 @@ export class SalesInvoice {
 }
 
 export class SalesInvoiceLine {
-
   setProduct(product) {
     this.product = product;
     return this;
@@ -135,5 +139,4 @@ export class SalesInvoiceLine {
     this.tuQuantity = tuQuantity;
     return this;
   }
-
 }

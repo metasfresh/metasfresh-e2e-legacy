@@ -20,32 +20,37 @@ describe('change product price', function() {
         .setValue(productCategoryValue)
         .apply();
     });
-    cy.fixture('product/simple_product.json').then(productJson => {
+    cy.fixture('product/product.json').then(productJson => {
       Object.assign(new Product(), productJson)
         .setName(productName)
         .setValue(productValue)
+        // .setProductType('Service')
         .setProductCategory(productCategoryValue + '_' + productCategoryName)
+        .setProductCategory('24_Gebinde')
         .apply();
+    });
+    cy.fixture('sales/simple_bpartner.json').then(bpartner => {
+      Object.assign(new BPartner(), bpartner).apply();
     });
     // new BPartner()
     //   .setName(bpartnerName)
     //   .setCustomer(true)
     //   .addLocation(new BPartnerLocation(bpartnerLocation).setCity('Cologne').setCountry('Deutschland'))
     //   .apply();
-    // new SalesOrder(salesReference)
-    //   .setBPartner(bpartnerName)
-    //   .setPricingSystem('Testpreisliste Kunden')
-    //   .setPaymentTerm('immediately')
-    //   .apply();
+    new SalesOrder(salesReference)
+      .setBPartner(bpartnerName)
+      .setPricingSystem('Testpreisliste Kunden')
+      .setPaymentTerm('immediately')
+      .apply();
   });
 
-  // it('order line', function() {
-  //   cy.selectTab('C_OrderLine');
+  it('order line', function() {
+    cy.selectTab('C_OrderLine');
 
-  //   cy.pressBatchEntryButton();
-  //   cy.writeIntoLookupListField('M_Product_ID', productName, productName);
-  //   cy.writeIntoStringField('Qty', '1');
-  // });
+    cy.pressBatchEntryButton();
+    cy.writeIntoLookupListField('M_Product_ID', productName, productName);
+    cy.writeIntoStringField('Qty', '1');
+  });
 
   it('check in product', function() {
     cy.visit('/window/140');
@@ -55,8 +60,8 @@ describe('change product price', function() {
     cy.writeIntoStringField('Name', productName, false, undefined, true);
     applyFilters();
 
-    cy.get('.td-lg > .cell-text-wrapper')
-      .contains(productName)
+    cy.get('.table > tbody')
+      .contains('td', productName)
       .dblclick();
   });
 });

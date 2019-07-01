@@ -144,7 +144,7 @@ export class Product {
         product.CU_TU_Allocation.forEach(function(allocation) {
           applyCUTUAllocation(allocation);
         });
-        cy.get('table tbody tr').should('have.length', product.prices.length);
+        cy.get('table tbody tr').should('have.length', product.CU_TU_Allocation.length);
       }
     });
   }

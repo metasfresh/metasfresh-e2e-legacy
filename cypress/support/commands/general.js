@@ -423,3 +423,12 @@ Cypress.Commands.add('getCurrentRecordId', () => {
     return currentRecordId;
   });
 });
+
+Cypress.Commands.add('clickOnFilteredTableRow', productName => {
+  describe('Select the current table row from table', function() {
+    return cy
+      .get('.table > tbody')
+      .contains('td', productName)
+      .dblclick();
+  });
+});

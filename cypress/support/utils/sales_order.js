@@ -1,6 +1,8 @@
 export class SalesOrder {
   constructor(reference) {
     this.reference = reference;
+    this.bPartner = undefined;
+    this.bPartnerLocation = undefined;
   }
 
   setBPartner(bPartner) {

@@ -424,7 +424,7 @@ Cypress.Commands.add('getCurrentRecordId', () => {
   });
 });
 
-Cypress.Commands.add('clickOnFilteredTableRow', productName => {
+Cypress.Commands.add('enterOnFilteredTableRow', productName => {
   describe('Select the current table row from table', function() {
     return cy
       .get('.table > tbody')

@@ -30,7 +30,7 @@ describe('change product price', function() {
         .setStandardPriceAmount(standardPrice1)
         .setLimitPriceAmount(limitPrice);
     });
-    cy.fixture('product/product.json').then(productJson => {
+    cy.fixture('product/product_without_prices.json').then(productJson => {
       Object.assign(new Product(), productJson)
         .setName(productName)
         .setValue(productValue)
@@ -85,7 +85,7 @@ describe('change product price', function() {
       .click();
     cy.openAdvancedEdit();
 
-    cy.writeIntoStringField('PriceStd', standardPrice2, true /*modal*/, null /*rewriteUrl*/, true /*noRequest*/);
+    cy.writeIntoStringField('PriceStd', standardPrice2, true, null, true);
 
     cy.get('.btn')
       .contains('Done')
@@ -98,8 +98,12 @@ describe('change product price', function() {
     cy.visitWindow('143');
     toggleNotFrequentFilters();
     selectNotFrequentFilterWidget('default');
-    cy.writeIntoStringField('Name', bpartnerName, false, undefined, true);
+    cy.writeIntoStringField('C_BPartner_ID', bpartnerName, false, undefined, true);
     applyFilters();
+
+    cy.get('.table > tbody')
+      .contains('td', bpartnerName)
+      .dblclick();
 
     cy.selectTab('C_OrderLine');
 
@@ -108,6 +112,7 @@ describe('change product price', function() {
     cy.writeIntoStringField('Qty', '1');
     cy.get('.table-flex-wrapper table tbody tr')
       .should('have.length', 2)
+      .get('.tr-odd')
       .click();
     cy.openAdvancedEdit();
     cy.get(`.form-field-PriceEntered`).find('input', standardPrice2);

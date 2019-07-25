@@ -37,6 +37,7 @@ export class Builder {
         .apply();
     });
   }
+
   /**
    * Use this when you aren't interested in configuring anything (except for the name) for the ProductCategory, ProductPrice or Product, but you only need them to exist.
    *
@@ -59,6 +60,24 @@ export class Builder {
         .apply();
     });
 
+    Builder.createBasicProductEntitiesExistingCategory(
+      productCategoryName,
+      productCategoryValue,
+      priceListName,
+      productName,
+      productValue,
+      productType
+    );
+  }
+
+  static createBasicProductEntitiesExistingCategory(
+    productCategoryName,
+    productCategoryValue,
+    priceListName,
+    productName,
+    productValue,
+    productType
+  ) {
     let productPrice;
     cy.fixture('product/product_price.json').then(productPriceJson => {
       productPrice = Object.assign(new ProductPrice(), productPriceJson).setPriceList(priceListName);

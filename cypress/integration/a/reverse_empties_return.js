@@ -27,20 +27,22 @@ import { Builder } from '../../support/utils/builder';
 import { PackingMaterial } from '../../support/utils/packing_material';
 import { EmptiesReturn } from '../../page_objects/empties_returns';
 import { DocumentStatusKey } from '../../support/utils/constants';
+import { BPartner } from '../../support/utils/bpartner';
 
-describe('Reverse Empties Return', function() {
-  const businessPartnerName = 'Test Lieferant 1';
+describe('Reverse vendor empties Return', function() {
+  const date = humanReadableNow();
+  //const date = '25T13:40:24.833';
+  const businessPartnerName = `Test Lieferant 1 ${date}`;
   const productQuantity = 222;
   const documentType = 'Leergutausgabe';
 
   // priceList
-  const date = humanReadableNow();
   const priceSystemName = `PriceSystem ${date}`;
   const priceListName = `PriceList ${date}`;
   const priceListVersionName = `PriceListVersion ${date}`;
 
   // product
-  const productCategory1 = `ProductCategory ${date}`;
+  const productCategory = `ProductCategory ${date}`;
   const productName1 = `Product1 ${date}`;
   const productName2 = `Product2 ${date}`;
   const productName3 = `Product3 ${date}`;
@@ -52,30 +54,50 @@ describe('Reverse Empties Return', function() {
   let originalDocumentNumber;
 
   describe('Create Packing Materials', function() {
-    it('Create Price and Products', function() {
-      Builder.createBasicPriceEntities(priceSystemName, priceListVersionName, priceListName, true);
+    it('Create price list version', function() {
+      Builder.createBasicPriceEntities(
+        priceSystemName,
+        priceListVersionName,
+        priceListName,
+        false /*isSalesPriceList*/
+      );
+    });
 
+    it('Create vendor ', function() {
+      cy.fixture('purchase/simple_vendor.json').then(vendorJson => {
+        new BPartner({ ...vendorJson })
+          .setName(businessPartnerName)
+          .setCustomer(false)
+          .setVendor(true)
+          .setVendorPricingSystem(priceSystemName)
+          .clearContacts()
+          .setBank(undefined)
+          .apply();
+      });
+    });
+
+    it('Create products', function() {
       Builder.createBasicProductEntities(
-        productCategory1,
-        productCategory1,
+        productCategory,
+        productCategory,
         priceListName,
         productName1,
         productName1,
         productType
       );
 
-      Builder.createBasicProductEntities(
-        productCategory1,
-        productCategory1,
+      Builder.createBasicProductEntitiesExistingCategory(
+        productCategory,
+        productCategory,
         priceListName,
         productName2,
         productName2,
         productType
       );
 
-      Builder.createBasicProductEntities(
-        productCategory1,
-        productCategory1,
+      Builder.createBasicProductEntitiesExistingCategory(
+        productCategory,
+        productCategory,
         priceListName,
         productName3,
         productName3,
@@ -165,8 +187,8 @@ function createEmptiesReturn(documentType, businessPartnerName, productNames, pr
 }
 
 function addLines(productNames, productQuantity) {
+  cy.selectTab('M_InOutLine');
   productNames.forEach((productName, index) => {
-    cy.selectTab('M_InOutLine');
     cy.pressBatchEntryButton();
     cy.writeIntoLookupListField('M_HU_PackingMaterial_ID', productName, productName);
 
@@ -176,14 +198,13 @@ function addLines(productNames, productQuantity) {
       cy.closeBatchEntry();
     } else {
       cy.writeIntoStringField('Qty', -1 * qty); //.type('{enter}'); // first write the positive qty (frontend bug workaround)
-      writeQtyInAdvancedEdit(qty, productName, index);
+      writeQtyInAdvancedEdit(qty, index);
     }
   });
 }
 
 function writeQtyInAdvancedEdit(productQuantity, rowNumber) {
   // select nth line
-  cy.selectTab('M_InOutLine');
   cy.selectNthRow(rowNumber);
 
   // do ya thing

@@ -91,11 +91,12 @@ describe('Create Purchase order - material receipt - invoice', function() {
     cy.contains('.input-dropdown-list-option', vendorName).click();
 
     cy.selectInListField('M_PricingSystem_ID', priceSystemName, false, null, true);
-    const addNewText = Cypress.messages.window.batchEntry.caption;
+    const batchEntryText = Cypress.messages.window.batchEntry.caption;
     cy.get('.tabs-wrapper .form-flex-align .btn')
-      .contains(addNewText)
+      .contains(batchEntryText)
       .should('exist')
       .click();
+
     cy.get('.quick-input-container .form-group').should('exist');
     cy.writeIntoLookupListField('M_Product_ID', productName1, productName1, false, false, null, true);
 

@@ -1,6 +1,6 @@
 export class BPartner {
   constructor(name) {
-    cy.log(`BPartner - set name = ${name}`);
+    cy.log(`BPartner - constructor - name = ${name}`);
     this.name = name;
     this.isVendor = false;
     this.vendorPricingSystem = undefined;
@@ -209,13 +209,13 @@ function applyBPartner(bPartner) {
 
     // Thx to https://stackoverflow.com/questions/16626735/how-to-loop-through-an-array-containing-objects-and-access-their-properties
     if (bPartner.bPartnerLocations.length > 0) {
-      bPartner.bPartnerLocations.forEach(function (bPartnerLocation) {
+      bPartner.bPartnerLocations.forEach(function(bPartnerLocation) {
         applyLocation(bPartnerLocation);
       });
       cy.get('table tbody tr').should('have.length', bPartner.bPartnerLocations.length);
     }
     if (bPartner.contacts.length > 0) {
-      bPartner.contacts.forEach(function (bPartnerContact) {
+      bPartner.contacts.forEach(function(bPartnerContact) {
         applyContact(bPartnerContact);
       });
       cy.get('table tbody tr').should('have.length', bPartner.contacts.length);

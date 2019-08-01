@@ -419,8 +419,9 @@ Cypress.Commands.add('waitForFieldValue', (alias, fieldName, expectedFieldValue,
       }
 
       /**
-       * Here i'm using `!=` and not `!==` so that '222' == 222 (a string is equals to a number with the same value)
-       * We need this for cases such as `cy.writeIntoStringField('QtyEntered', 222, true);`
+       * TODO: Please oh please let's fix the types at one point
+       *  Here i'm using `!=` and not `!==` so that '222' == 222 (a string is equals to a number with the same value)
+       *  We need this for cases such as `cy.writeIntoStringField('QtyEntered', 222, true);`
        */
       if (actualFieldValue != expectedFieldValue) {
         cy.log(
@@ -460,5 +461,15 @@ Cypress.Commands.add('getSalesInvoiceTotalAmount', () => {
 Cypress.Commands.add('waitUntilProcessIsFinished', () => {
   describe('Wait until a process id finished', function() {
     cy.wait(10000);
+  });
+});
+
+Cypress.Commands.add('waitUntilEverythingIsSaved', (expectIndicator = false) => {
+  describe('Wait until everything is saved and all requests are finished', function() {
+    if (expectIndicator) {
+      cy.get('.indicator-pending').should('exist');
+    }
+    cy.get('.indicator-pending').should('not.exist');
+    cy.get('.indicator-saved').should('exist');
   });
 });

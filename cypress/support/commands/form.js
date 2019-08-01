@@ -194,8 +194,7 @@ Cypress.Commands.add('selectOffsetDateViaPicker', (fieldName, dayOffset, modal) 
  * @param {boolean} noRequest - if set to true, don't wait for the response from the server
  */
 Cypress.Commands.add('writeIntoStringField', (fieldName, stringValue, modal, rewriteUrl, noRequest) => {
-  describe('Enter value into string field', function() {
-    const aliasName = `writeIntoStringField-${fieldName}-${new Date().getTime()}`;
+  const aliasName = `writeIntoStringField-${fieldName}-${new Date().getTime()}`;
     const expectedPatchValue = removeSubstringsWithCurlyBrackets(stringValue);
     // in the default pattern we want to match URLs that do *not* end with "/NEW"
     const patchUrlPattern = rewriteUrl || '/rest/api/window';
@@ -212,14 +211,13 @@ Cypress.Commands.add('writeIntoStringField', (fieldName, stringValue, modal, rew
     cy.get(path)
       .find('input')
       .type('{selectall}', { force: true })
-      .type(`${stringValue}`)
+    .type(stringValue)
       .type('{enter}', { force: true });
 
     if (!noRequest) {
       cy.waitForFieldValue(`@${aliasName}`, fieldName, expectedPatchValue);
     }
   });
-});
 
 /**
  * Function to fill in textareas
@@ -380,8 +378,9 @@ Cypress.Commands.add('selectNthInListField', (fieldName, index, modal) => {
   });
 });
 
-Cypress.Commands.add('setCheckBoxValue', (fieldName, isChecked, modal = false, rewriteUrl = null) => {
-  describe(`Set the Checkbox value ${fieldName} to ${isChecked}`, function() {
+Cypress.Commands.add('setCheckBoxValue', (fieldName, isChecked, modal = false, rewriteUrl = null, skipRequest = false) => {
+  cy.log(`Set the Checkbox value ${fieldName} to ${isChecked}`);
+
     // the expected value is the same as the checked state
     // (used only for verification if the checkbox has the correct value)
     const expectedPatchValue = isChecked;
@@ -391,15 +390,14 @@ Cypress.Commands.add('setCheckBoxValue', (fieldName, isChecked, modal = false, r
         if (theCheckboxValue) {
           // Nothing to do, already checked
         } else {
-          cy.clickOnCheckBox(fieldName, expectedPatchValue, modal, rewriteUrl);
+          cy.clickOnCheckBox(fieldName, expectedPatchValue, modal, rewriteUrl, skipRequest);
         }
       } else {
         if (theCheckboxValue) {
-          cy.clickOnCheckBox(fieldName, expectedPatchValue, modal, rewriteUrl);
+          cy.clickOnCheckBox(fieldName, expectedPatchValue, modal, rewriteUrl, skipRequest);
         } else {
           // Nothing to do, already unchecked
         }
       }
     });
   });
-});

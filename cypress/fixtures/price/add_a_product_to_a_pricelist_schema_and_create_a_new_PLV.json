@@ -1,0 +1,21 @@
+{
+  "PriceSystem": {
+    "name": "PriceSystem",
+    "description": "Test PriceSystem",
+    "isActive": true
+  },
+  "PriceList": {
+    "name": "PriceList",
+    "country": "Deutschland",
+    "currency": "EUR",
+    "description": "Test PriceList",
+    "priceSystem": "PriceSystemFromAboveWithTimestamp",
+    "pricePrecision": 2,
+    "salesPriceList": false,
+    "priceListVersions": [
+      {
+        "validFrom": "01/01/2019"
+      }
+    ]
+  }
+}

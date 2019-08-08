@@ -80,7 +80,6 @@ export class PriceList {
     describe(`Create new PriceListVersion ${priceListVersion.name}`, function() {
       cy.selectTab('M_PriceList_Version');
       cy.pressAddNewButton();
-      cy.writeIntoStringField('Name', `${priceListVersion.name} ${priceListVersion.validFrom}`, true, null, true);
       cy.writeIntoStringField('ValidFrom', priceListVersion.validFrom, true, null, true);
       if (priceListVersion.discountSchema) {
         cy.selectInListField('M_DiscountSchema_ID', priceListVersion.discountSchema, true);
@@ -94,16 +93,6 @@ export class PriceList {
 }
 
 export class PriceListVersion {
-  constructor(name, plDocId) {
-    this.name = name;
-  }
-
-  setName(name) {
-    cy.log(`PriceListVersion - set n = ${name}`);
-    this.name = name;
-    return this;
-  }
-
   setDescription(description) {
     cy.log(`PriceListVersion - set Description = ${description}`);
     this.description = description;

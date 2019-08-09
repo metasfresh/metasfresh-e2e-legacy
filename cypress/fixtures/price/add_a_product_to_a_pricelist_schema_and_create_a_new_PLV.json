@@ -81,5 +81,12 @@
         "surchargeAmount": 222
       }
     ]
+  },
+
+  "PriceListVersionFromPriceListSchema": {
+    "name": "PriceListVersionFromSchema",
+    "validFrom": "01/02/2019",
+    "discountSchema": "aaaaaaa PriceListSchema from above  + date!",
+    "basisPriceListVersion": "aaaaa the PriceListVersion from above"
   }
 }

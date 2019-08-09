@@ -1,6 +1,6 @@
 import { humanReadableNow } from '../../support/utils/utils';
 import { Pricesystem } from '../../support/utils/pricesystem';
-import { PriceList } from '../../support/utils/pricelist';
+import { PriceList, PriceListVersion } from '../../support/utils/pricelist';
 import { Product, ProductCategory } from '../../support/utils/product';
 import { PriceListSchema } from '../../support/utils/price_list_schema';
 
@@ -13,6 +13,9 @@ let fixture;
 // Price
 let priceSystemName;
 let priceListName;
+let priceListVersionName;
+let priceListVersionNameSearch1; // magic from fixture (PLV doesn't have standard name :( )
+let priceListVersionNameSearch2; // magic from fixture (PLV doesn't have standard name :( )
 
 // Product
 let categoryName;
@@ -50,6 +53,9 @@ describe('Read fixture and prepare test data', function() {
     priceListJson.name = priceListJson.name + appendDate();
     priceListName = priceListJson.name;
     priceListJson.priceSystem = priceSystemName;
+
+    priceListVersionName = priceListJson.priceListVersions[0].name + appendDate();
+    priceListJson.priceListVersions[0].name = priceListVersionName;
 
     Object.assign(new PriceList(), priceListJson).apply();
 

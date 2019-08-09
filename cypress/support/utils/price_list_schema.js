@@ -31,6 +31,18 @@ export class PriceListSchema {
     return this;
   }
 
+  setValidFrom(validFrom) {
+    cy.log(`PriceListSchema - set validFrom = ${validFrom}`);
+    this.validFrom = validFrom;
+    return this;
+  }
+
+  setDiscountType(discountType) {
+    cy.log(`PriceListSchema - set discountType = ${discountType}`);
+    this.discountType = discountType;
+    return this;
+  }
+
   addLine(priceListSchemaLine) {
     cy.log(`PriceListSchema - add line`);
     this.lines.push(priceListSchemaLine);
@@ -57,7 +69,6 @@ export class PriceListSchemaLine {
     return this;
   }
 
-
   setStandardPriceSurchargeAmount(surchargeAmount) {
     cy.log(`PriceListSchemaLine - set surchargeAmount = ${surchargeAmount}`);
     this.surchargeAmount = surchargeAmount;
@@ -69,8 +80,8 @@ function applyPriceListSchema(priceListSchema) {
   cy.visitWindow('337', 'NEW');
 
   cy.writeIntoStringField('Name', priceListSchema.name);
-  cy.writeIntoStringField('ValidFrom', '01/01/2019', false, null, true);
-  cy.selectInListField('DiscountType', 'Pricelist'); // maybe this needs a trl and to be a parameter
+  cy.writeIntoStringField('ValidFrom', priceListSchema.validFrom, false, null, true);
+  cy.selectInListField('DiscountType', priceListSchema.discountType); // maybe this needs a trl and to be a parameter
 
   priceListSchema.lines.forEach(line => {
     applyPriceListSchemaLine(line);

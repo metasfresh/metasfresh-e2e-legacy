@@ -37,33 +37,41 @@ describe('Read fixture and prepare test data', function() {
     });
   });
 
-  it('Create Price', function() {
+  it('Create PriceSystem', function() {
     const priceSystemJson = fixture['PriceSystem'];
     priceSystemJson.name = priceSystemJson.name + `_${date}`;
     priceSystemName = priceSystemJson.name;
 
+    Object.assign(new Pricesystem(), priceSystemJson).apply();
+  });
+
+  it('Create PriceList and Version', function() {
     const priceListJson = fixture['PriceList'];
     priceListJson.name = priceListJson.name + appendDate();
     priceListName = priceListJson.name;
+    priceListJson.priceSystem = priceSystemName;
 
-    Builder2.createPriceEntities(priceSystemJson, priceListJson);
+    Object.assign(new PriceList(), priceListJson).apply();
 
     cy.getCurrentWindowRecordId().then(id => (priceListID = id));
   });
 
-  it('Create Product1 and Category', function() {
+  it('Create ProductCategory', function() {
     const productCategoryJson = fixture['ProductCategory'];
     productCategoryJson.name = productCategoryJson.name + appendDate();
     categoryName = productCategoryJson.name;
 
+    Object.assign(new ProductCategory(), productCategoryJson).apply();
+  });
+
+  it('Create Product1', function() {
     const productJson = fixture['Products'][0];
     productJson.name = productJson.name + appendDate();
     productName1 = productJson.name;
 
     productJson.productPrices[0].priceList = priceListName;
 
-    Builder2.createProductCategory(productCategoryJson);
-    Builder2.createProduct(productJson);
+    Object.assign(new Product(), productJson).apply();
   });
 
   it('Create Product2', function() {
@@ -73,41 +81,24 @@ describe('Read fixture and prepare test data', function() {
 
     productJson.productPrices[0].priceList = priceListName;
 
-    Builder2.createProduct(productJson);
+    Object.assign(new Product(), productJson).apply();
   });
-});
 
-describe('Create Price List Schema for Product', function() {
   it('Create Price List Schema', function() {
     const priceListSchemaJson = fixture['PriceListSchema'];
     priceListSchemaJson.name = priceListSchemaJson.name + appendDate();
     priceListSchemaName = priceListSchemaJson.name;
 
-    surchargeAmount = priceListSchemaJson.lines[0].surchargeAmount;
     priceListSchemaJson.lines[0].product = productName1;
+    surchargeAmount = priceListSchemaJson.lines[0].surchargeAmount;
 
     Object.assign(new PriceListSchema(), priceListSchemaJson).apply();
   });
 });
 
+describe('Create Price List Schema for Product', function() {
+});
+
 function appendDate() {
   return `_${date}`;
-}
-
-class Builder2 {
-  static createProduct(productJson) {
-    Object.assign(new Product(), productJson).apply();
-  }
-
-  static createProductCategory(productCategoryJson,) {
-    Object.assign(new ProductCategory(), productCategoryJson).apply();
-  }
-
-  static createPriceEntities(priceSystemJson, priceListJson) {
-    Object.assign(new Pricesystem(), priceSystemJson).apply();
-
-    Object.assign(new PriceList(), priceListJson)
-      .setPriceSystem(priceSystemJson.name)
-      .apply();
-  }
 }

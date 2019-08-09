@@ -49,9 +49,9 @@ export class Product {
     return this;
   }
 
-  setProductCategory(m_product_category) {
-    cy.log(`Product - set productCategory = ${m_product_category}`);
-    this.m_product_category = m_product_category;
+  setCategory(category) {
+    cy.log(`Product - set Category = ${category}`);
+    this.category = category;
     return this;
   }
 
@@ -98,7 +98,7 @@ export class Product {
     cy.visitWindow('140', 'NEW');
     cy.writeIntoStringField('Name', product.name);
 
-    cy.selectInListField('M_Product_Category_ID', product.m_product_category);
+    cy.selectInListField('M_Product_Category_ID', product.category);
 
     cy.writeIntoStringField('Description', product.description);
 

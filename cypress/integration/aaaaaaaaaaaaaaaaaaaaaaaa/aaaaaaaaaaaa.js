@@ -75,6 +75,7 @@ describe('Read fixture and prepare test data', function() {
     productJson.name = productJson.name + appendDate();
     productName1 = productJson.name;
 
+    productJson.category = categoryName;
     productJson.productPrices[0].priceList = priceListName;
 
     Object.assign(new Product(), productJson).apply();
@@ -85,6 +86,7 @@ describe('Read fixture and prepare test data', function() {
     productJson.name = productJson.name + appendDate();
     productName2 = productJson.name;
 
+    productJson.category = categoryName;
     productJson.productPrices[0].priceList = priceListName;
 
     Object.assign(new Product(), productJson).apply();

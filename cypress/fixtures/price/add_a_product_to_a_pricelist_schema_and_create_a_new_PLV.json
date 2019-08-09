@@ -27,7 +27,7 @@
     {
       "name": "Product1",
       "description": "Test Product1",
-      "m_product_category": "06_Kartoffeln",
+      "category": "aaaaa the category from before",
       "c_uom": "Each",
       "de_DE__c_uom": "Stück",
       "isStocked": true,
@@ -50,7 +50,7 @@
     {
       "name": "Product2",
       "description": "Test Product2",
-      "m_product_category": "06_Kartoffeln",
+      "category": "aaaaa the category from before",
       "c_uom": "Each",
       "de_DE__c_uom": "Stück",
       "isStocked": true,

@@ -12,7 +12,7 @@ import { PackingInstructionsVersion } from '../../support/utils/packing_instruct
 import { ProductCategory } from '../../support/utils/product';
 import { applyFilters, selectNotFrequentFilterWidget, toggleNotFrequentFilters } from '../../support/functions';
 
-describe('Create Sales order', function() {
+describe('Pick into a new HU', function() {
   const date = humanReadableNow();
   const customer1 = `CustomerTest1 ${date}`;
   const productName1 = `ProductTest1 ${date}`;

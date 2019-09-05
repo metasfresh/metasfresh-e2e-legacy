@@ -183,13 +183,14 @@ it('Go to Invoice Disposition and uncheck In Dispute', function() {
   filterInBillingCandidatesWindow();
 });
 it('Select both rows and generate invoices', function() {
+  cy.readAllNotifications();
   cy.selectAllRowsOnCurrentPage();
   cy.executeQuickAction('C_Invoice_Candidate_EnqueueSelectionForInvoicing', false, true);
   cy.pressStartButton();
   cy.waitUntilProcessIsFinished();
 });
 it('Open Purchase Invoice and check the deduction in Invoice Line tab', function() {
-  cy.openInboxNotificationWithText('Rechnung');
+  cy.openInboxNotificationWithText(vendorName);
   cy.selectTab('C_InvoiceLine');
   cy.expectNumberOfRows(3);
   cy.selectRowByColumnAndValue({ column: qtyEnteredColumnName, value: deduction });

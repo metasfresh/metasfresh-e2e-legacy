@@ -1,6 +1,7 @@
-import { Pricesystem } from './pricesystem';
+import PriceSystem from './pricesystem_api';
+import ProductCategory from './product_category_api.js';
 import { PriceList, PriceListVersion } from './pricelist';
-import { Product, ProductCategory, ProductPrice } from './product';
+import { Product, ProductPrice } from './product';
 import { PackingMaterial } from './packing_material';
 import { PackingInstructions } from './packing_instructions';
 import { PackingInstructionsVersion } from './packing_instructions_version';
@@ -17,9 +18,7 @@ export class Builder {
    */
   static createBasicPriceEntities(priceSystemName, priceListVersionName, priceListName, isSalesPriceList) {
     cy.fixture('price/pricesystem.json').then(priceSystemJson => {
-      Object.assign(new Pricesystem(), priceSystemJson)
-        .setName(priceSystemName)
-        .apply();
+      new PriceSystem({ ...priceSystemJson, name: priceSystemName }).apply();
     });
 
     let priceListVersion;
@@ -44,18 +43,9 @@ export class Builder {
    *
    * - Only the tests which need customised Product* types should create their own (by copying the contents of this method and modifying as needed).
    */
-  static createBasicProductEntities(
-    productCategoryName,
-    productCategoryValue,
-    priceListName,
-    productName,
-    productValue,
-    productType
-  ) {
+  static createBasicProductEntities(productCategoryName, productCategoryValue, priceListName, productName, productValue, productType) {
     cy.fixture('product/simple_productCategory.json').then(productCategoryJson => {
-      Object.assign(new ProductCategory(), productCategoryJson)
-        .setName(productCategoryName)
-        .apply();
+      new ProductCategory({ ...productCategoryJson, name: productCategoryName }).apply();
     });
 
     let productPrice;
@@ -73,15 +63,7 @@ export class Builder {
     });
   }
 
-  static createProductWithPriceAndCUTUAllocationUsingExistingCategory(
-    productCategoryName,
-    productCategoryValue,
-    priceListName,
-    productName,
-    productValue,
-    productType,
-    packingInstructionsName
-  ) {
+  static createProductWithPriceAndCUTUAllocationUsingExistingCategory(productCategoryName, productCategoryValue, priceListName, productName, productValue, productType, packingInstructionsName) {
     let productPrice;
     cy.fixture('product/product_price.json').then(productPriceJson => {
       productPrice = Object.assign(new ProductPrice(), productPriceJson).setPriceList(priceListName);

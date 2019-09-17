@@ -1,8 +1,8 @@
 import { salesOrders } from '../../page_objects/sales_orders';
 
-import { SalesOrder } from '../../support/utils/sales_order_api';
+import SalesOrder from '../../support/utils/sales_order_api';
 import { BPartner } from '../../support/utils/bpartner';
-import {humanReadableNow} from "../../support/utils/utils";
+import { humanReadableNow } from "../../support/utils/utils";
 
 const date = humanReadableNow();
 const customer1Name = `Customer1-${date}`;

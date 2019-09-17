@@ -1,6 +1,6 @@
 import { DiscountSchema } from '../../support/utils/discountschema';
 import { BPartner } from '../../support/utils/bpartner';
-import { SalesOrder } from '../../support/utils/sales_order_api';
+import SalesOrder from '../../support/utils/sales_order_api';
 import { appendHumanReadableNow } from '../../support/utils/utils';
 
 describe('BPartner relations', function() {

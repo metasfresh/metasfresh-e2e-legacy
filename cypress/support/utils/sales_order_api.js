@@ -1,10 +1,11 @@
 import config from '../../config';
 import { wrapRequest, findByName } from './utils';
 
-export class SalesOrder {
+export default class SalesOrder {
   constructor({ reference, ...vals }) {
     cy.log(`SalesOrder - set reference = ${reference}`);
     this.reference = reference;
+    this.lines = [];
 
     for (let [key, val] of Object.entries(vals)) {
       this[key] = val;
@@ -15,6 +16,11 @@ export class SalesOrder {
   setBPartner(bPartner) {
     cy.log(`SalesOrder - setBPartner = ${bPartner}`);
     this.bPartner = bPartner;
+    return this;
+  }
+
+  addLine(salesOrderLine) {
+    this.lines.push(salesOrderLine);
     return this;
   }
 
@@ -48,10 +54,23 @@ export class SalesOrder {
     return this;
   }
 
+  setPriceSystem(priceSystem) {
+    cy.log(`SalesOrder - priceSystem = ${priceSystem}`);
+    this.priceSystem = priceSystem;
+    return this;
+  }
+
   apply() {
     cy.log(`SalesOrder - apply - START (${this.reference})`);
     return SalesOrder.applySalesOrder(this).then(() => {
       cy.log(`SalesOrder - apply - END (${this.reference})`);
+
+      if (this.lines.length) {
+        cy.visitWindow(143, this.id);
+
+        // @TODO: Temporarily we're adding order lines manually
+        SalesOrder.applyLines(this);
+      }
 
       return cy.wrap(this);
     });
@@ -155,20 +174,18 @@ export class SalesOrder {
       })
     );
 
-    return Cypress.Promise.all([
-      bPartnerRequest,
-      bPartnerLocationRequest,
-      invoicePartnerRequest,
-      invoicePartnerLocationRequest,
-      warehouseRequest,
-    ]).then(vals => {
-      const [
-        bPartnerResponse,
-        bPartnerLocationResponse,
-        invoicePartnerResponse,
-        invoicePartnerLocationResponse,
-        warehouseResponse,
-      ] = vals;
+    const priceSystemRequest = wrapRequest(
+      cy.request({
+        url: `${basicUri}/${salesOrder.id}/field/M_PricingSystem_ID/dropdown`,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    );
+
+    return Cypress.Promise.all([bPartnerRequest, bPartnerLocationRequest, invoicePartnerRequest, invoicePartnerLocationRequest, warehouseRequest, priceSystemRequest]).then(vals => {
+      const [bPartnerResponse, bPartnerLocationResponse, invoicePartnerResponse, invoicePartnerLocationResponse, warehouseResponse, priceSystemResponse] = vals;
 
       const bPartner = findByName(bPartnerResponse, salesOrder.bPartner);
       if (salesOrder.bPartner && bPartner) {
@@ -230,7 +247,43 @@ export class SalesOrder {
         });
       }
 
+      const priceSystem = findByName(priceSystemResponse, salesOrder.priceSystem);
+      if (salesOrder.priceSystem && priceSystem) {
+        dataObject.push({
+          op: 'replace',
+          path: 'M_PricingSystem_ID',
+          value: {
+            key: priceSystem.key,
+            caption: priceSystem.caption,
+          },
+        });
+      }
+
       return dataObject;
     });
+  }
+
+  static applyLines(salesOrder) {
+    salesOrder.lines.forEach(line => {
+      cy.selectTab('C_OrderLine');
+      cy.pressAddNewButton();
+
+      cy.writeIntoLookupListField('M_Product_ID', line.product, line.product, false /*typeList*/, true /*modal*/);
+      cy.writeIntoStringField('QtyEntered', line.quantity, true /*modal*/, null /*rewriteUrl*/, true /*noRequest, bc the patch response is e.g. 20 and we would be waiting for e.g. '20' */);
+
+      cy.pressDoneButton();
+    });
+  }
+}
+
+export class SalesOrderLine {
+  setProduct(product) {
+    this.product = product;
+    return this;
+  }
+
+  setQuantity(quantity) {
+    this.quantity = quantity;
+    return this;
   }
 }

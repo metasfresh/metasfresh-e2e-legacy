@@ -30,9 +30,9 @@ export default class Pricesystem {
   }
 
   apply() {
-    cy.log(`Pricesystem - apply - START (${this.reference})`);
+    cy.log(`Pricesystem - apply - START (${this.name})`);
     return Pricesystem.applyPriceSystem(this).then(() => {
-      cy.log(`Pricesystem - apply - END (${this.reference})`);
+      cy.log(`Pricesystem - apply - END (${this.name})`);
 
       return cy.wrap(this);
     });

@@ -1,6 +1,7 @@
 import PriceSystem from './pricesystem_api';
+import ProductCategory from './product_category_api.js';
 import { PriceList, PriceListVersion } from './pricelist';
-import { Product, ProductCategory, ProductPrice } from './product';
+import { Product, ProductPrice } from './product';
 import { PackingMaterial } from './packing_material';
 import { PackingInstructions } from './packing_instructions';
 import { PackingInstructionsVersion } from './packing_instructions_version';
@@ -44,9 +45,7 @@ export class Builder {
    */
   static createBasicProductEntities(productCategoryName, productCategoryValue, priceListName, productName, productValue, productType) {
     cy.fixture('product/simple_productCategory.json').then(productCategoryJson => {
-      Object.assign(new ProductCategory(), productCategoryJson)
-        .setName(productCategoryName)
-        .apply();
+      new ProductCategory({ ...productCategoryJson, name: productCategoryName }).apply();
     });
 
     let productPrice;

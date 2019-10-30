@@ -1,6 +1,6 @@
 import { DataEntryTab } from '../../support/utils/dataEntryTab';
 
-import { appendHumanReadableNow, getLanguageSpecific } from '../../support/utils/utils';
+import { appendHumanReadableNow } from '../../support/utils/utils';
 
 let dataEntryTabName;
 let dataEntry_TargetWindow_ID; 
@@ -11,7 +11,7 @@ describe('Reproduce issue https://github.com/metasfresh/metasfresh-webui-fronten
   it('Read the fixture', function() {
     cy.fixture('dataEntry/dataEntry_set_seqno.json').then(f => {
       dataEntryTabName = appendHumanReadableNow(f['dataEntryTabName']);
-      dataEntry_TargetWindow_ID = getLanguageSpecific(f, 'dataEntry_TargetWindow_ID');
+      dataEntry_TargetWindow_ID = f['dataEntry_TargetWindow_ID'];
       tabName = f['tabName'];
       seqNo = f['seqNo'];
     });
@@ -20,7 +20,7 @@ describe('Reproduce issue https://github.com/metasfresh/metasfresh-webui-fronten
   it('Create dataEntry group with SeqNo 21', function() {
 
 
-    new DataEntryTab(dataEntryTabName, eingabeFenster)
+    new DataEntryTab(dataEntryTabName, dataEntry_TargetWindow_ID)
       .setTabName(tabName)
       .setSeqNo(seqNo)
       .apply();

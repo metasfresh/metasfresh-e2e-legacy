@@ -1,6 +1,7 @@
 {
     "dataEntryTabName": "Group1 ",
-    "eingabeFenster": "Business Partner",
+   
+    "dataEntry_TargetWindow_ID": "Business Partner",
     "de_DE__eingabeFenster": "Geschäft",
     "tabName": "Group1-Tab1",
     "seqNo": "21"

@@ -3,7 +3,7 @@ import { DataEntryTab } from '../../support/utils/dataEntryTab';
 import { appendHumanReadableNow, getLanguageSpecific } from '../../support/utils/utils';
 
 let dataEntryTabName;
-let eingabeFenster; 
+let dataEntry_TargetWindow_ID; 
 let tabName;
 let seqNo;
 
@@ -11,7 +11,7 @@ describe('Reproduce issue https://github.com/metasfresh/metasfresh-webui-fronten
   it('Read the fixture', function() {
     cy.fixture('dataEntry/dataEntry_set_seqno.json').then(f => {
       dataEntryTabName = appendHumanReadableNow(f['dataEntryTabName']);
-      eingabeFenster = getLanguageSpecific(f, 'eingabeFenster');
+      dataEntry_TargetWindow_ID = getLanguageSpecific(f, 'dataEntry_TargetWindow_ID');
       tabName = f['tabName'];
       seqNo = f['seqNo'];
     });

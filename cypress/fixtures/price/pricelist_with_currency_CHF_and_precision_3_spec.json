@@ -3,5 +3,7 @@
     "priceListName": "TestPriceList",
     "pricePrecision": "3",
     "currency": "CHF",
-    "country": "Switzerland"
+    "country": "Switzerland",
+    "de_DE__country": "Schweiz",
+    "de_CH__country": "Schweiz"
 }

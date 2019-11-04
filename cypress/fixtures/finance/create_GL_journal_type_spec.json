@@ -2,9 +2,13 @@
     "description": "test",
     "category": "Standard",
     "postingType1": "Statistical",
+    "de_DE__postingType1": "Statistisch",
+    "de_CH__postingType1": "Statistisch",
     "currency": "CHF",
     "docType": "Journal",
     "postingType2": "Budget",
     "postingType3": "Ist (Jahr Ende)",
-    "postingType4": "Statistical"
+    "postingType4": "Statistical",
+    "de_DE__postingType4": "Statistisch",
+    "de_CH__postingType4": "Statistisch"
 }

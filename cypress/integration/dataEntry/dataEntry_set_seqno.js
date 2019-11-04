@@ -1,14 +1,28 @@
 import { DataEntryTab } from '../../support/utils/dataEntryTab';
-import { humanReadableNow } from '../../support/utils/utils';
+
+import { appendHumanReadableNow } from '../../support/utils/utils';
+
+let dataEntryTabName;
+let dataEntry_TargetWindow_ID; 
+let tabName;
+let seqNo;
 
 describe('Reproduce issue https://github.com/metasfresh/metasfresh-webui-frontend/issues/2214', function() {
-  it('Create dataEntry group with SeqNo 21', function() {
-    const date = humanReadableNow();
-    const dataEntryTabName = `Group1 ${date}`;
+  it('Read the fixture', function() {
+    cy.fixture('dataEntry/dataEntry_set_seqno.json').then(f => {
+      dataEntryTabName = appendHumanReadableNow(f['dataEntryTabName']);
+      dataEntry_TargetWindow_ID = f['dataEntry_TargetWindow_ID'];
+      tabName = f['tabName'];
+      seqNo = f['seqNo'];
+    });
+  });
 
-    new DataEntryTab(dataEntryTabName, 'Business Partner')
-      .setTabName('Group1-Tab1')
-      .setSeqNo(21)
+  it('Create dataEntry group with SeqNo 21', function() {
+
+
+    new DataEntryTab(dataEntryTabName, dataEntry_TargetWindow_ID)
+      .setTabName(tabName)
+      .setSeqNo(seqNo)
       .apply();
 
     // these are sortof guards, to demonstrate that other fields work.

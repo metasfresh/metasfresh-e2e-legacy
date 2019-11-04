@@ -1,4 +1,8 @@
 {
   "attributeName": "ListAttributeName",
+  "mandatoryType": "Optional",
+  "de_DE__mandatoryType": "Not Mandatory",
+  "de_CH__mandatoryType": "Not Mandatory",
   "attributeSetName": "AttributeSet"
+  
 }

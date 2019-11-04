@@ -135,7 +135,7 @@ export class AttributeSet {
   constructor(name) {
     cy.log(`AttributeSet - name = ${name}`);
     this.name = name;
-    this.mandatoryType = 'Optional';
+    this.mandatoryType = '';
     this.attributes = [];
   }
 

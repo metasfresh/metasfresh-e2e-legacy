@@ -1,6 +1,7 @@
 import { PriceList } from '../../support/utils/pricelist';
 import { Pricesystem } from '../../support/utils/pricesystem';
 import { appendHumanReadableNow } from '../../support/utils/utils';
+import { getLanguageSpecific } from '../../support/utils/utils';
 
 describe('Create a Pricelist with currency CHF and precision 3', function() {
   let priceSystemName;
@@ -13,9 +14,8 @@ describe('Create a Pricelist with currency CHF and precision 3', function() {
       priceSystemName = appendHumanReadableNow(f['priceSystemName']);
       priceListName = appendHumanReadableNow(f['priceListName']);
       pricePrecision = f['pricePrecision'];
-
       currency = f['currency'];
-      country = f['country'];
+      country = getLanguageSpecific(f,'country');
     });
   });
   it('Create new Pricesystem', function() {

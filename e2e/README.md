@@ -137,8 +137,3 @@ Otherwise there might be issues with our linter.
 Additionally recommended VS Code plugins:
 * `ESLint` for developing test specs
 * `Docker` for editing our docker file
-
-
-
-
-zzzzzzzzzzzzzz

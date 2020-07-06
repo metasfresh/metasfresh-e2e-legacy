@@ -1,3 +1,8 @@
+# :warning: This repository is discontinued :warning:
+
+The code from this repo is now maintained in https://github.com/metasfresh/metasfresh
+
+
 # Location of our cypress tests
 
 Right now, the actual cypress tests reside in the [metasfresh-webui-frontend](https://github.com/metasfresh/metasfresh-webui-frontend) repo. This is going to change as of issue [#7](https://github.com/metasfresh/metasfresh-e2e/issues/7) Move existing cypress tests into this repo
